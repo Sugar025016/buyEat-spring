@@ -25,16 +25,18 @@ import com.buy_eat.buy_eat.config.handler.JsonAuthenticationEntryPoint;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	CustomAuthenticationProvider customAuthenticationProvider;
-
+	@Autowired
+	private UserDetailServiceImpl userDetailsService;
 	@Autowired
 	private DataSource dataSource;
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests(requests -> requests
 						.antMatchers("/api/**", "/login*").permitAll()
-						.antMatchers("/logout*").hasRole("USER")
-						.antMatchers("/admin/**", "/logout*").hasRole("ADMIN")
+						.antMatchers("/logout*", "/api/upload*").hasRole("USER")
+						.antMatchers("/admin/**", "/api/upload*").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.formLogin(login -> login
 						.loginProcessingUrl("/login")
@@ -49,12 +51,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						.clearAuthentication(true)
 						.permitAll())
 				.exceptionHandling(handling -> handling
-						.authenticationEntryPoint(new JsonAuthenticationEntryPoint()))
+						.authenticationEntryPoint(new JsonAuthenticationEntryPoint()))// 定義判定未登入時回傳JSON
 				.rememberMe(me -> me
 						.rememberMeCookieName("remember-me")
 						.rememberMeParameter("remember-me")
 						.tokenRepository(persistentTokenRepository())
-						.tokenValiditySeconds(600));// 定義判定未登入時回傳JSON
+						.tokenValiditySeconds(600)
+						.userDetailsService(userDetailsService));//定義remember-me等於true 和 token 過期時
 
 		http.csrf(csrf -> csrf
 				.ignoringAntMatchers("/login*", "/logout*")

@@ -20,13 +20,15 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "auto_increment")
     @GenericGenerator(name = "auto_increment", strategy = "native")
@@ -36,15 +38,30 @@ public class Product {
     @Column(name = "name", length = 255, nullable = false)
     private String name;
 
+    @Column(name = "description", length = 255)
+    private String description;
+
+    @Column(name = "prise", length = 255, nullable = false)
+    private int prise;
+
+    @Column(name = "is_delete", length = 255, nullable = false)
+    private Boolean isDelete;
+
+    @Column(name = "disable", length = 255, nullable = false)
+    private Boolean disable;
+
     @JsonIgnore
     @JoinColumn(name = "shop_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Shop shop;
 
-    // @JsonIgnore
     @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "category_product", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Category> category;
+
+    // @JoinColumn(name = "file_data")
+    // @OneToOne(cascade = CascadeType.ALL)
+    // private FileData fileData;
 
     @Override
     public String toString() {

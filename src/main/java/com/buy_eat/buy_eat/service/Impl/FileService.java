@@ -15,11 +15,7 @@ import com.buy_eat.buy_eat.entity.FileData;
 import com.buy_eat.buy_eat.repository.IFileDateRepository;
 import com.buy_eat.buy_eat.service.IFileService;
 
-/**
- * @author: IFileService
- * @date: 2021/10/2
- * @description:
- */
+
 @Transactional
 @Service
 public class FileService implements IFileService {

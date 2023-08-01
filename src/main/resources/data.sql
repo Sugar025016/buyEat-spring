@@ -25,8 +25,8 @@
 --         "img",
 --         false,
 --         false,
---         CURRENT_TIME,
---         CURRENT_TIME
+--         CURRENT_TIMESTAMP,
+--         CURRENT_TIMESTAMP
 --     ),
 --     (
 --         2,
@@ -39,59 +39,79 @@
 --         "img",
 --         false,
 --         1,
---         CURRENT_TIME,
---         CURRENT_TIME
+--         CURRENT_TIMESTAMP,
+--         CURRENT_TIMESTAMP
 --     );
+INSERT
+    IGNORE INTO address (
+        id,
+        city,
+        area,
+        detail,
+        create_time,
+        update_time
+    )
+VALUES
+    (
+        1,
+        'cityA',
+        'area',
+        "detail",
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    ),
+    (
+        2,
+        'cityB',
+        'area',
+        "detail",
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
+    );
 
 INSERT
     IGNORE INTO shop (
         id,
         name,
         phone,
-        address,
         description,
-        account,
-        password,
         is_delete,
         disable,
         create_time,
-        change_time
+        update_time,
+        address
     )
 VALUES
     (
         1,
         'valueA',
         '123456789',
-        "address",
         "description",
-        "account",
-        "password",
         false,
         false,
-        CURRENT_TIME,
-        CURRENT_TIME
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP,
+        1
     ),
     (
         2,
         'valueB',
         '123456789',
-        "address",
         "description",
-        "account",
-        "password",
         false,
         1,
-        CURRENT_TIME,
-        CURRENT_TIME
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP,
+        2
     );
 
 INSERT
-    IGNORE INTO product (id, name, shop_id)
+    IGNORE INTO product (id, name, prise, shop_id, is_delete, disable)
 VALUES
-    (1, 'value1A', 1),
-    (2, 'value1B', 1),
-    (3, 'value1C', 1),
-    (4, 'value1D', 1);
+    (1, 'value1A', 10, 1, false, false),
+    (2, 'value1B', 20, 1, false, false),
+    (3, 'value1C', 30, 1, false, false),
+    (4, 'value1D', 40, 1, false, false);
 
 INSERT
     IGNORE INTO category (id, name)
@@ -166,7 +186,16 @@ where
     );
 
 INSERT
-    IGNORE INTO user (id, name, phone, account, password, role)
+    IGNORE INTO user (
+        id,
+        name,
+        phone,
+        account,
+        password,
+        role,
+        create_time,
+        update_time
+    )
 VALUES
     (
         1,
@@ -174,7 +203,9 @@ VALUES
         '123456789',
         'admin',
         'password',
-        'admin'
+        'admin',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
     ),
     (
         2,
@@ -182,5 +213,7 @@ VALUES
         '123456789',
         'user',
         'password',
-        'user'
+        'user',
+        CURRENT_TIMESTAMP,
+        CURRENT_TIMESTAMP
     );

@@ -15,5 +15,6 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
     // long deleteBy(Integer id);
 
     Product getProductById(Integer id);
+    
 
 }

@@ -15,11 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-/**
- * @author: FileData
- * @date: 2021/10/2
- * @description:
- */
+
 @Getter
 @Setter
 @Entity
@@ -54,6 +50,5 @@ public class FileData {
         this.fileName = fileName+suffix;
         this.suffix = suffix;
         this.contentType=multipartFile.getContentType();
-
     }
 }
