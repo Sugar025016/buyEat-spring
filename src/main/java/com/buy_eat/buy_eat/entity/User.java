@@ -13,9 +13,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Where;
+import org.springframework.beans.BeanUtils;
+
+import com.buy_eat.buy_eat.model.request.UserPutRequest;
+import com.buy_eat.buy_eat.model.request.UserRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,7 +33,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
-public class User extends BaseEntity{
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "auto_increment", strategy = "native")
@@ -34,29 +41,44 @@ public class User extends BaseEntity{
     private Integer id;
     @Column(name = "name", length = 255, nullable = false)
     private String name;
-    @Column(name = "phone", length = 11, nullable = false)
+    @Column(name = "phone", length = 11)
     private String phone;
-    @Column(name = "account", length = 11, nullable = false)
+    @Column(name = "account", length = 11, nullable = false, unique = true)
     private String account;
     @Column(name = "password", length = 11, nullable = false)
     private String password;
-    @Column(name = "role", length = 11, nullable = false)
+    @Column(name = "role", length = 11, columnDefinition = "VARCHAR(11) DEFAULT 'user'")
     private String role;
-    @Email 
-    @Column(name = "email", length = 255, nullable = false)
+    @Email
+    @Column(name = "email", length = 255)
     private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    // @JoinTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"))
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
+    // @JoinTable(name = "user_address", joinColumns = @JoinColumn(name =
+    // "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"))
     private List<Address> address;
 
-
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
+    @Where(clause = "is_delete = false")
     private List<Shop> shops;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "love", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "shop_id"))
-    private List<Shop> shopLoveList;
+    @JoinTable(name = "love", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "shop_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
+            "user_id", "shop_id" }))
+    @Where(clause = "is_delete = false")
+    private List<Shop> loves;
+
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Cart> carts;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Order> orders;
 
     // 給關聯過來的回傳值
     @Override
@@ -69,5 +91,22 @@ public class User extends BaseEntity{
                 '}';
     }
 
+    public User(UserRequest userRequest) {
+        BeanUtils.copyProperties(userRequest, this);
+
+    }
+
+    public void setUser(UserPutRequest userPutRequest) {
+        BeanUtils.copyProperties(userPutRequest, this);
+    }
+
+    // public Set<ShopResponse> getShopLoveList() {
+    //     Set<ShopResponse> collect = shopLoveList.stream().map(v->new ShopResponse(v)).collect(Collectors.toSet());
+    //     return collect;
+    // }
+
+    // public void setShopLoveList(Set<Shop> shopLoveList) {
+    //     this.shopLoveList = shopLoveList;
+    // }
 
 }

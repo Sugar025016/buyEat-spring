@@ -3,7 +3,6 @@ package com.buy_eat.buy_eat.controller;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,9 +19,6 @@ public class Demo {
 
     @Autowired
     IFileService fileService;
-    @Value("${imageGetUrl}")
-
-    String imageGetUrl;
     @RequestMapping(path = "", method = RequestMethod.POST)
     public String getLogin() {
         System.out.println("有鬼阿..........=.=+，1");
@@ -39,18 +35,15 @@ public class Demo {
 
     @Transactional
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
-    public ResponseEntity<FileResponse> uploadFile(MultipartFile uploadedFile) {
+    public ResponseEntity<FileResponse> uploadFile(MultipartFile file) {
 
-        System.out.println(uploadedFile.getName());
-        System.out.println("uploadedFile.getContentType():" + uploadedFile.getContentType());
+        System.out.println(file.getName());
 
-        System.out.println("uploadedFile.getOriginalFilename():" + uploadedFile.getOriginalFilename());
-        System.out.println("成功********");
+        FileData save = fileService.save(file);
 
-        FileData save = fileService.save(uploadedFile);
-
-        FileResponse fileResponse = new FileResponse(save.getId(), imageGetUrl + save.getFileName());
-        // return new Response(Rcode.Success, fileResponse);
+        FileResponse fileResponse = new FileResponse(save.getId(),  save.getFileName());
         return ResponseEntity.ok().body(fileResponse);
     }
+
+
 }

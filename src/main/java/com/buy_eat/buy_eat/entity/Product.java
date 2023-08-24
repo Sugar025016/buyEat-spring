@@ -10,13 +10,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.BeanUtils;
 
+import com.buy_eat.buy_eat.model.request.BackstageProductAddRequest;
+import com.buy_eat.buy_eat.model.request.BackstageProductPutRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -28,7 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "product")
-public class Product extends BaseEntity{
+public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "auto_increment")
     @GenericGenerator(name = "auto_increment", strategy = "native")
@@ -44,52 +47,58 @@ public class Product extends BaseEntity{
     @Column(name = "prise", length = 255, nullable = false)
     private int prise;
 
-    @Column(name = "is_delete", length = 255, nullable = false)
-    private Boolean isDelete;
+    @Column(name = "is_delete", length = 255, nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isDelete;
 
-    @Column(name = "disable", length = 255, nullable = false)
-    private Boolean disable;
+    @Column(name = "is_orderable", length = 255, nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isOrderable;
+
+    // @Column(name = "is_sold_out", length = 255, nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    // private boolean is_sold_out;
+
+    // @JsonIgnore
+    // @JoinColumn(name = "shop_id")
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // private Shop shop;
 
     @JsonIgnore
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "tab_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Shop shop;
+    private Tab tab;
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "category_product", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Category> category;
+    @JoinColumn(name = "file_data")
+    @OneToOne(cascade = CascadeType.ALL)
+    private FileData fileData;
 
-    // @JoinColumn(name = "file_data")
-    // @OneToOne(cascade = CascadeType.ALL)
-    // private FileData fileData;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<Cart> cart;
 
     @Override
     public String toString() {
         return "Product{" +
                 "id=" + id +
                 ", name=" + name +
+                ", prise=" + prise +
+                ", description=" + description +
                 '}';
     }
 
-    // @Column(name = "price", nullable = false)
-    // private Integer price;
+    public void setDelete(boolean isDelete) {
+        if (isDelete) {
+            this.isOrderable = true;
+        }
+    }
 
-    // @Column(name = "enabled")
-    // private boolean enabled;
+    public void setProduct(BackstageProductPutRequest productPutRequest) {
+        BeanUtils.copyProperties(productPutRequest, this);
+        this.fileData = null;
+    }
 
-    // @Column(name="enable")
-    // private FileData image;
+    public Product(BackstageProductAddRequest productAddRequest) {
+        BeanUtils.copyProperties(productAddRequest, this);
 
-    // @Column(name = "description", length = 255)
-    // private String description;
-
-    // @Column(name = "category", length = 255)
-    // private String category;
-
-    // @Column(name = "creat_date")
-    // private Date createDate;
-
-    // @Column(name = "disable")
-    // private boolean disable=false;
+    }
 
 }

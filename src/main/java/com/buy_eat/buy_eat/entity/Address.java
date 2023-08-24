@@ -8,12 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.BeanUtils;
+
+import com.buy_eat.buy_eat.model.request.AddressRequest;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
 @Entity
 @Table(name = "address")
 public class Address extends BaseEntity{
@@ -31,5 +36,16 @@ public class Address extends BaseEntity{
 
     @Column(name = "detail")
     private String detail;
+
+
+    
+    public Address(AddressRequest addressRequest) {
+        BeanUtils.copyProperties(addressRequest ,this);
+    }
+
+
+    public void setAddress(AddressRequest addressRequest) {
+        BeanUtils.copyProperties(addressRequest ,this);
+    }
 
 }

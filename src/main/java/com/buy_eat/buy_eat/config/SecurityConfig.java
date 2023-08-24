@@ -30,13 +30,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests(requests -> requests
-						.antMatchers("/api/**", "/login*").permitAll()
-						.antMatchers("/logout*", "/api/upload*").hasRole("USER")
-						.antMatchers("/admin/**", "/api/upload*").hasRole("ADMIN")
+						.antMatchers("/api/category/**","/api/product/**","/api/shop/**","/api/tab/**","/logout*","/login*").permitAll()
+						.antMatchers("/api/upload*").hasRole("USER")
+						.antMatchers("/backstage/**", "/api/upload**","/api/**/**").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.formLogin(login -> login
 						.loginProcessingUrl("/login")
@@ -57,10 +58,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						.rememberMeParameter("remember-me")
 						.tokenRepository(persistentTokenRepository())
 						.tokenValiditySeconds(600)
-						.userDetailsService(userDetailsService));//定義remember-me等於true 和 token 過期時
+						.userDetailsService(userDetailsService));// 定義remember-me等於true 和 token 過期時
+
+
 
 		http.csrf(csrf -> csrf
-				.ignoringAntMatchers("/login*", "/logout*")
+				.ignoringAntMatchers("/login*", "/logout*","/api/upload*")
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 
 	}

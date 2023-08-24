@@ -27,6 +27,8 @@ import lombok.Setter;
 
 public class FileData {
 
+    public static String imageGetUrl = "http://localhost:8082/";
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY, generator="auto_increment")
     @GenericGenerator(name = "auto_increment", strategy = "native")
@@ -51,4 +53,14 @@ public class FileData {
         this.suffix = suffix;
         this.contentType=multipartFile.getContentType();
     }
+
+
+
+    public String getFileName() {
+        return imageGetUrl+fileName;
+    }
+
+
+
+
 }

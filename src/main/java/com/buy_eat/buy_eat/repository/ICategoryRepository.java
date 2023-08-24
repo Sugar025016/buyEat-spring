@@ -13,7 +13,7 @@ public interface ICategoryRepository extends JpaRepository<Category,Integer> {
 
     // Category getCategoryById(Integer id);
     // @Modifying
-    // long  deleteByCategory(Category category);
+    // int  deleteByCategory(Category category);
 
     @Modifying
     void  deleteById(Integer id);

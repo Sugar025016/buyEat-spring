@@ -1,5 +1,6 @@
 package com.buy_eat.buy_eat.config.handler;
 
+
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,11 @@ public class RestResponseEntityExceptionHandler
         String errorMessage = "Not found: " + ex.getMessage();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
     }
+
+    // @ExceptionHandler(RelationNotFoundException.class)
+    // public ResponseEntity<String> handleResourceNotFoundException(ResourceAccessException ex) {
+    //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    // }
 
     // @ExceptionHandler(OtherException.class)
     // public ResponseEntity<Object> handleOtherException(OtherException ex) {

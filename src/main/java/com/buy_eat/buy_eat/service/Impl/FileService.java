@@ -23,12 +23,6 @@ public class FileService implements IFileService {
     @Autowired
     IFileDateRepository iFileDateRepository;
 
-    @Value("${imageGetUrl}")
-    String imageGetUrl;
-    @Value("${imagePutUrl}")
-    String imagePutUrl;
-    @Value("${imagePutUrl2}")
-    String imagePutUrl2;
     @Value("/home/jessie/work/my/img/")
     String ubuntuImgUrl;
 
@@ -55,8 +49,8 @@ public class FileService implements IFileService {
         String originalFilename=multipartFile.getOriginalFilename();
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         Date date = new Date();
-        long round = Math.round(Math.random() * 10000);
-        long time = date.getTime();
+        Long round = Math.round(Math.random() * 10000);
+        Long time = date.getTime();
         String fileName= String.valueOf(time)+round;
 //        String filePath = imagePutUrl+"/"+fileName+suffix;
         String filePath = ubuntuImgUrl+fileName+suffix;
@@ -69,19 +63,6 @@ public class FileService implements IFileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        String filePath2 = imagePutUrl2+"/"+fileName+suffix;
-//
-//        File files = new File(filePath2);
-//        if(!files.getParentFile().exists()){
-//            files.getParentFile().mkdirs();
-//        }
-//        try {
-//            multipartFile.transferTo(files);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
 
         FileData fileData = new FileData(multipartFile,suffix,fileName);
         FileData save = iFileDateRepository.save(fileData);

@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,10 +16,12 @@ import lombok.Setter;
 @MappedSuperclass
 public abstract class BaseEntity {
 
-    @Column(name = "create_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(name = "create_time", updatable = false)
     private LocalDateTime createTime;
 
-    @Column(name = "update_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    @LastModifiedDate
+    @Column(name = "update_time")
     private LocalDateTime updateTime;
 
     // Constructors, getters, and setters...

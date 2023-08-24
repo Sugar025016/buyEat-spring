@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +23,6 @@ import com.buy_eat.buy_eat.repository.IUserRepository;
 @Component
 @Transactional
 public class CustomAuthenticationProvider implements AuthenticationProvider {
-	// PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	// @Autowired
-	// private PasswordEncoder passwordEncoder;
 	@Autowired
 	IUserRepository iUserRepository;
 	private User user;
@@ -38,7 +36,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		Optional<User> findByAccount = iUserRepository.findByAccount(username);
 		if (findByAccount.isPresent()) {
 			user = findByAccount.get();
-			// if (!passwordEncoder.matches(password, user.getPassword()))
 			if (!password.equals(user.getPassword()))
 				throw new AuthenticationServiceException(String.format("please check account or password"));
 		} else {
@@ -49,11 +46,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 
 		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		if (user.getRole() == "admin") {
+		if (user.getRole().equals("admin")) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-
 		}
-		return new UsernamePasswordAuthenticationToken(username, password, authorities);
+        UserDetails userDetails = new CustomUserDetails(user.getId(), authentication.getName(), authentication.getCredentials().toString(), authorities);
+		return new UsernamePasswordAuthenticationToken(userDetails, authentication.getCredentials(), userDetails.getAuthorities());
 	}
 
 	@Override

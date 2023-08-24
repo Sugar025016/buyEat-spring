@@ -18,11 +18,10 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException exception) throws IOException, ServletException {
-        // 在這裡處理登錄成功後的邏輯
-        // 例如：組裝 JSON 數據
         Map<String, Object> responseData = new HashMap<>();
-        responseData.put("status", "fall");
+        responseData.put("ok", false);
         responseData.put("message", "登錄失敗");
+        responseData.put("code", 401);
         // 將 JSON 寫入 response 中
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
