@@ -1,5 +1,6 @@
 package com.buy_eat.buy_eat.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.domain.Page;
@@ -22,5 +23,6 @@ public interface IShopService {
     boolean putShop(BackstageShopPutRequest shopPutRequest);
     boolean addShop(BackstageShopAddRequest ShopAddRequest);
     Set<Shop> findShopsLim();
-
+    List<Shop> findShopsByName(String name);
+    
 }

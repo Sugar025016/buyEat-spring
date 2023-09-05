@@ -1,5 +1,6 @@
 package com.buy_eat.buy_eat.service.Impl;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -43,7 +44,13 @@ public class ShopService implements IShopService {
                 shopRequest.getArea(), shopRequest.getCategoryId(), shopRequest.getOther());
 
     }
+    @Override
+    public List<Shop> findShopsByName(String name) {
+        
 
+        return iShopRepository.findFirst6ByNameLikeAndIsDeleteIsFalse("%"+name+"%");
+
+    }
     @Override
     public Shop getShopById(int id) {
 

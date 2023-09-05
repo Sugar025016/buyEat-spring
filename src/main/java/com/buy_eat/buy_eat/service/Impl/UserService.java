@@ -2,6 +2,7 @@ package com.buy_eat.buy_eat.service.Impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Transient;
@@ -39,17 +40,6 @@ public class UserService implements IUserService {
         return findById.get();
     }
 
-
-    //     @Override
-    // public User findById(int  id) {
-    //     Optional<User> findById = iUserRepository.findById(id);
-
-    //     if (!findById.isPresent()) {
-    //         throw new NullPointerException();
-    //     }
-    //     return findById.get();
-    // }
-
     @Override
     public User findByAccount(String account) {
         Optional<User> findById = iUserRepository.findByAccount(account);
@@ -58,6 +48,16 @@ public class UserService implements IUserService {
             throw new NullPointerException();
         }
         return findById.get();
+    }
+
+   
+    @Override
+    public List<String> findByAccounts(String account) {
+        account="%"+account+"%";
+        List<User> findById = iUserRepository.findFirst6ByAccountLike(account);
+
+        List<String> collect = findById.stream().map(v->v.getAccount()).collect(Collectors.toList());
+        return collect;
     }
 
 

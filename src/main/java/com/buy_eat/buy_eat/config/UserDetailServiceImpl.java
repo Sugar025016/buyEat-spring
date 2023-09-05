@@ -16,11 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.buy_eat.buy_eat.entity.User;
 import com.buy_eat.buy_eat.repository.IUserRepository;
 
-/**
- * @author: UserDetailServiceImpl
- * @date: 2021/9/18
- * @description:
- */
+
 @Configuration
 @EnableWebSecurity
 public class UserDetailServiceImpl implements UserDetailsService {

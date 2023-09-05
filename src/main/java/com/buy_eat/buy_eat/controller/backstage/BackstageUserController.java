@@ -1,10 +1,13 @@
 package com.buy_eat.buy_eat.controller.backstage;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,4 +47,10 @@ public class BackstageUserController {
         return ResponseEntity.ok().body(userService.existByAccount(account));
     }
 
+    @RequestMapping(path = "/account/{account}", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getUserAccount(
+            @PathVariable String account) {
+
+        return ResponseEntity.ok().body(userService.findByAccounts(account));
+    }
 }

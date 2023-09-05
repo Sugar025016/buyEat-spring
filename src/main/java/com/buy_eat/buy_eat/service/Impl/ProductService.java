@@ -118,6 +118,8 @@ public class ProductService implements IProductService {
         if (!tab.isPresent()) {
             throw new NullPointerException();
         }
+
+        
         product.setTab(tab.get());
 
         if (productAddRequest.getImgId() != null) {

@@ -26,4 +26,6 @@ public interface IUserService {
 
     List<Shop> findLoveByAccount(int id );
     List<Shop> addOrDeleteUserLove(int id,int shopId) ;
+
+    List<String> findByAccounts(String account);
 }

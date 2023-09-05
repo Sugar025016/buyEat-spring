@@ -5,11 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * @author: FileResponse
- * @date: 2021/10/3
- * @description:
- */
+
 @Getter
 @Setter
 @NoArgsConstructor

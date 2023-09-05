@@ -1,5 +1,6 @@
 package com.buy_eat.buy_eat.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -30,5 +31,9 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     boolean existByAccount(String account);
 
     // List<Shop> findByShopLoveList_userId(int id);
+
+    List<User> findFirst6ByAccountLike(String username);
+    List<User> findFirst6ByAccountContaining(String username);
+    
 
 }

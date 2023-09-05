@@ -105,14 +105,14 @@ VALUES
     (
         1,
         "image/jpeg",
-        "1691994708919221.jpg",
+        "16923603086287289.jpg",
         "images.jpeg",
         ".jpg"
     ),
     (
         2,
         "image/png",
-        "1691994708919221.jpg",
+        "16919499737518416.jpg",
         "pngtree-halloween-ghost-jack-olantern-png-image_6127297.png",
         ".jpg"
     ),
@@ -120,6 +120,34 @@ VALUES
         3,
         "image/png",
         "1691922420438552.jpg",
+        "pngtree-halloween-ghost-jack-olantern-png-image_6127298.png",
+        ".jpg"
+    ),
+    (
+        4,
+        "image/png",
+        "16919176263019256.jpg",
+        "pngtree-halloween-ghost-jack-olantern-png-image_6127298.png",
+        ".jpg"
+    ),
+    (
+        5,
+        "image/png",
+        "16922736861398553.jpg",
+        "pngtree-halloween-ghost-jack-olantern-png-image_6127298.png",
+        ".jpg"
+    ),
+    (
+        6,
+        "image/png",
+        "16922737258118861.jpg",
+        "pngtree-halloween-ghost-jack-olantern-png-image_6127298.png",
+        ".jpg"
+    ),
+    (
+        7,
+        "image/png",
+        "16927208415324378.jpg",
         "pngtree-halloween-ghost-jack-olantern-png-image_6127298.png",
         ".jpg"
     );
@@ -285,18 +313,20 @@ VALUES
     (10, '555555', 5);
 
 INSERT
-    IGNORE INTO product (id, name, prise, tab_id, is_delete, is_orderable)
+    IGNORE INTO product (id, name, prise, tab_id,file_data, is_delete, is_orderable,
+        create_time,
+        update_time)
 VALUES
-    (1, 'value1A', 10, 1, false, false),
-    (2, 'value1B', 20, 1, false, false),
-    (3, 'value1C', 30, 1, false, false),
-    (4, 'value1D', 40, 1, false, false),
-    (5, 'value1A', 10, 2, false, false),
-    (6, 'value1B', 20, 2, false, false),
-    (7, 'value1C', 30, 3, false, false),
-    (8, 'value1C', 30, 3, false, false),
-    (9, 'value1D', 40, 4, false, false),
-    (10, 'value1D', 40, 5, false, false);
+    (1, 'value1A', 10, 1,3, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (2, 'value1B', 20, 1,5, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (3, 'value1C', 30, 1,4, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (4, 'value1D', 40, 1,6, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (5, 'value1A', 10, 2,7, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (6, 'value1B', 20, 2,3, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (7, 'value1C', 30, 3,4, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (8, 'value1C', 30, 3,5, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (9, 'value1D', 40, 4,6, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (10, 'value1D', 40, 5,7, false, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT
     IGNORE INTO category (id, name)
@@ -417,3 +447,18 @@ VALUES
 --             category_id = 3
 --             and product_id = 2
 --     );
+INSERT
+    IGNORE INTO schedule (id, week, start_time, end_time, type, shop_id)
+VALUES
+    (1, 1, '08:00:00', '12:00:00', 0, 1),
+    (2, 2, '13:00:00', '17:00:00', 1, 1),
+    (3, 3, '18:00:00', '22:00:00', 0, 1),
+    (4, 4, '08:00:00', '12:00:00', 1, 1),
+    (5, 5, '13:00:00', '17:00:00', 0, 2),
+    (6, 6, '18:00:00', '22:00:00', 1, 2),
+    (7, 0, '08:00:00', '12:00:00', 0, 3),
+    (8, 1, '13:00:00', '17:00:00', 1, 3),
+    (9, 2, '18:00:00', '22:00:00', 0, 4),
+    (10, 3, '08:00:00', '12:00:00', 1, 5),
+    (11, 1, '16:00:00', '19:00:00', 1, 1),
+    (12, 2, '16:00:00', '19:00:00', 1, 1);

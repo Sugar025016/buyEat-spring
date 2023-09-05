@@ -74,6 +74,10 @@ public class Shop extends BaseEntity {
     private List<Tab> tabs;
 
     @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop",fetch = FetchType.LAZY)
+    private List<Schedule> schedules;
+
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.REMOVE,fetch = FetchType.LAZY, mappedBy="loves")
     private List<User> loves;
 

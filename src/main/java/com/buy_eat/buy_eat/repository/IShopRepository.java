@@ -1,5 +1,6 @@
 package com.buy_eat.buy_eat.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -62,4 +63,6 @@ public interface IShopRepository extends JpaRepository<Shop, Integer> {
 	Optional<Shop> findByIdAndIsDeleteIsFalse(int id);
 
     // Set<Shop> findAllByLove_Id(int userId);
+
+	List<Shop> findFirst6ByNameLikeAndIsDeleteIsFalse(String name);
 }
