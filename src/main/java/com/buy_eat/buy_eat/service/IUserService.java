@@ -20,6 +20,7 @@ public interface IUserService {
     boolean addUser(UserRequest userRequest);
     boolean existByAccount(String account);
     boolean putUser(UserPutRequest userPutRequest, int id);
+    boolean putUser(UserRequest userRequest, int id);
 
     boolean putUserPassword(PasswordRequest passwordRequest,int id);
 

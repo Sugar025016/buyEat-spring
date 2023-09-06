@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,20 +16,23 @@ import lombok.Setter;
 @MappedSuperclass
 public abstract class BaseEntity {
 
-    @CreatedDate
+    // @CreatedDate
+    @CreationTimestamp
     @Column(name = "create_time", updatable = false)
     private LocalDateTime createTime;
 
-    @LastModifiedDate
+    // @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "update_time")
     private LocalDateTime updateTime;
 
-    // Constructors, getters, and setters...
 
     public BaseEntity() {
+
+        // 自定義日期時間格式
         this.createTime = LocalDateTime.now();
         this.updateTime = LocalDateTime.now();
     }
 
-    // Other common methods or properties...
 }
+

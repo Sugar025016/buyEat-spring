@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.buy_eat.buy_eat.model.request.UserPutRequest;
 import com.buy_eat.buy_eat.model.request.UserRequest;
 import com.buy_eat.buy_eat.model.response.BackstageUserResponse;
 import com.buy_eat.buy_eat.service.Impl.UserService;
@@ -37,6 +38,13 @@ public class BackstageUserController {
     public ResponseEntity<Boolean> addUser(
             @RequestBody UserRequest UserRequest) {
         boolean ok = userService.addUser(UserRequest);
+        return ResponseEntity.ok().body(ok);
+    }
+
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Boolean> putUser(
+            @RequestBody UserPutRequest UserRequest,@PathVariable int id) {
+        boolean ok = userService.putUser(UserRequest,id);
         return ResponseEntity.ok().body(ok);
     }
 

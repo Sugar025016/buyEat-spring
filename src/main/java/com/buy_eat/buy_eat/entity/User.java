@@ -100,6 +100,10 @@ public class User extends BaseEntity {
         BeanUtils.copyProperties(userPutRequest, this);
     }
 
+    public void setUser(UserRequest userRequest) {
+        BeanUtils.copyProperties(userRequest, this);
+    }
+
     // public Set<ShopResponse> getShopLoveList() {
     //     Set<ShopResponse> collect = shopLoveList.stream().map(v->new ShopResponse(v)).collect(Collectors.toSet());
     //     return collect;

@@ -40,7 +40,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 				throw new AuthenticationServiceException(String.format("please check account or password"));
 		} else {
 			throw new BadCredentialsException("please check account or password");
-
 		}
 
 		List<GrantedAuthority> authorities = new ArrayList<>();

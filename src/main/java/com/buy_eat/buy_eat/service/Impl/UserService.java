@@ -50,16 +50,14 @@ public class UserService implements IUserService {
         return findById.get();
     }
 
-   
     @Override
     public List<String> findByAccounts(String account) {
-        account="%"+account+"%";
+        account = "%" + account + "%";
         List<User> findById = iUserRepository.findFirst6ByAccountLike(account);
 
-        List<String> collect = findById.stream().map(v->v.getAccount()).collect(Collectors.toList());
+        List<String> collect = findById.stream().map(v -> v.getAccount()).collect(Collectors.toList());
         return collect;
     }
-
 
     @Override
     public Page<BackstageUserResponse> findByName(Pageable pageable, String name) {
@@ -80,8 +78,6 @@ public class UserService implements IUserService {
         return iUserRepository.existByAccount(account);
     }
 
-    
-
     @Override
     public boolean putUser(UserPutRequest userPutRequest, int id) {
         Optional<User> findById = iUserRepository.findById(id);
@@ -91,6 +87,20 @@ public class UserService implements IUserService {
         User user = findById.get();
 
         user.setUser(userPutRequest);
+        iUserRepository.save(user);
+
+        return true;
+    }
+
+    @Override
+    public boolean putUser(UserRequest userRequest, int id) {
+        Optional<User> findById = iUserRepository.findById(id);
+        if (!findById.isPresent()) {
+            throw new NullPointerException();
+        }
+        User user = findById.get();
+
+        user.setUser(userRequest);
         iUserRepository.save(user);
 
         return true;
@@ -117,7 +127,7 @@ public class UserService implements IUserService {
         Optional<User> findById = iUserRepository.findById(id);
         User user = findById.orElseThrow(
                 () -> new IllegalArgumentException("Value not found"));
-                List<Shop> shopLoveList = user.getLoves();
+        List<Shop> shopLoveList = user.getLoves();
         return shopLoveList;
 
     }
@@ -138,7 +148,7 @@ public class UserService implements IUserService {
             user.getLoves().add(shop);
         }
 
-        user=iUserRepository.save(user);
+        user = iUserRepository.save(user);
 
         return user.getLoves();
     }

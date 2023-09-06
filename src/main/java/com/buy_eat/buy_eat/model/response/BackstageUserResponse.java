@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.BeanUtils;
 
 import com.buy_eat.buy_eat.entity.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -32,8 +33,10 @@ public class BackstageUserResponse {
 
     private String email;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     public BackstageUserResponse(User user) {

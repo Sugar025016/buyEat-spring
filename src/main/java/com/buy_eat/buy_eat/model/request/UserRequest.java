@@ -17,7 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserRequest {
 
-    private Integer id;
+    // private Integer id;
 
     @NotNull(message = "name 不能為空")
     @Size(min=3,max=16)
