@@ -36,8 +36,6 @@ public class Cart extends BaseEntity {
     @ManyToOne()
     private Product product;
 
-    @Column(name = "shop_id")
-    private int shopId;
 
     @Column(name = "department", nullable = true)
     private String department;
@@ -48,8 +46,8 @@ public class Cart extends BaseEntity {
     @Column(name = "qty", nullable = true)
     private int qty;
 
-    @Column(name = "note", nullable = true)
-    private String note;
+    @Column(name = "remark", nullable = true)
+    private String remark;
 
     @JsonIgnore
     @JoinColumn(name = "user_id")
@@ -60,7 +58,6 @@ public class Cart extends BaseEntity {
         BeanUtils.copyProperties(cartRequest, this);
         this.user=user;
         this.product=product;
-        this.shopId=product.getTab().getShop().getId();
 
     }
 

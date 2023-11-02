@@ -7,12 +7,16 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buy_eat.buy_eat.entity.Shop;
+import com.buy_eat.buy_eat.model.request.BackstageShopAddRequest;
+import com.buy_eat.buy_eat.model.request.BackstageShopPutRequest;
 import com.buy_eat.buy_eat.model.request.ShopSearchRequest;
+import com.buy_eat.buy_eat.model.response.ShopDetailResponse;
 import com.buy_eat.buy_eat.model.response.ShopResponse;
 import com.buy_eat.buy_eat.service.Impl.ShopService;
 
@@ -38,12 +42,23 @@ public class ShopController {
 
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ShopResponse> getShop(@PathVariable() int id) {
+    public ResponseEntity<ShopDetailResponse> getShop(@PathVariable() int id) {
 
-        ShopResponse shopResponse = new ShopResponse(shopService.getShopById(id));
+        ShopDetailResponse shopResponse = new ShopDetailResponse(shopService.getShopById(id));
         return ResponseEntity.ok().body(shopResponse);
     }
 
+
+    @RequestMapping(path = "", method = RequestMethod.PUT)
+    public ResponseEntity<Boolean> putShop(@RequestBody  BackstageShopPutRequest shopPutRequest ) {
+        return ResponseEntity.ok().body(shopService.putShop(shopPutRequest));
+    }
+
+
+    @RequestMapping(path = "", method = RequestMethod.POST)
+    public ResponseEntity<Boolean> postShop(@RequestBody  BackstageShopAddRequest shopPutRequest ) {
+        return ResponseEntity.ok().body(shopService.addShop(shopPutRequest));
+    }
 
 
 }

@@ -24,5 +24,8 @@ public interface IShopService {
     boolean addShop(BackstageShopAddRequest ShopAddRequest);
     Set<Shop> findShopsLim();
     List<Shop> findShopsByName(String name);
+    List<Shop> getShopsByUserId(int id);
+    Shop getShopByUserId(int shopId,int userId);
+    boolean deleteShop(int id);
     
 }

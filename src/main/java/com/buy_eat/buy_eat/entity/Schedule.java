@@ -2,6 +2,7 @@ package com.buy_eat.buy_eat.entity;
 
 import java.time.LocalTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,10 +20,9 @@ import com.buy_eat.buy_eat.model.TimePeriod;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Entity
-@EqualsAndHashCode(callSuper = false)
+// @EqualsAndHashCode(callSuper = false)
 @Data
 @Table(name = "schedule")
 public class Schedule {
@@ -46,17 +46,21 @@ public class Schedule {
 
     @JsonIgnore
     @JoinColumn(name = "shop_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY ,cascade=CascadeType.REFRESH)
     private Shop shop;
 
 
     public Schedule() {
     }
 
-    public Schedule(int week,TimePeriod timePeriod ,int type){
+    public Schedule(int week,TimePeriod timePeriod ,int type , Shop shop){
         BeanUtils.copyProperties(timePeriod,this);
         this.type=type;
         this.week=week;
+        this.shop=shop;
     }
+
+    
+
 }
 

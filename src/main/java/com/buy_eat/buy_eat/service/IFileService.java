@@ -7,7 +7,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.buy_eat.buy_eat.entity.FileData;
 
 public interface IFileService {
+    
     FileData getOne(Integer Id);
+
+    FileData getFileById(Integer imgId);
 
     FileData getAll();
 

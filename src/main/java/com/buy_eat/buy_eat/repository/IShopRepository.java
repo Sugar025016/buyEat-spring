@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.buy_eat.buy_eat.entity.Shop;
 import com.buy_eat.buy_eat.model.response.BackstageShopResponse;
 
+
 @Repository
 public interface IShopRepository extends JpaRepository<Shop, Integer> {
 
@@ -44,6 +45,7 @@ public interface IShopRepository extends JpaRepository<Shop, Integer> {
 			"AND (:area IS NULL OR s.address.area = :area) " +
 			"AND (:categoryId IS NULL OR c.id = :categoryId)" +
 			"AND (:other IS NULL OR c.name like %:other% OR p.name like %:other% OR s.name like %:other%)" +
+			"AND (s.isDelete = false)" +
 			"group by s.id", countQuery = "SELECT count(s) FROM Shop s " +
 					"LEFT JOIN s.category c " +
 					"LEFT JOIN s.tabs t " +
@@ -52,6 +54,7 @@ public interface IShopRepository extends JpaRepository<Shop, Integer> {
 					"AND (:area IS NULL OR s.address.area = :area) " +
 					"AND (:categoryId IS NULL OR c.id = :categoryId)" +
 					"AND (:other IS NULL OR c.name like %:other% OR p.name like %:other% OR s.name like %:other%)" +
+					"AND (s.isDelete = false)" +
 					"group by s.id")
 	Page<BackstageShopResponse> findByAddress_CityAndAddress_AreaAndCategory_IdAndCategory_name(
 			@Param("city") String city,
@@ -65,4 +68,10 @@ public interface IShopRepository extends JpaRepository<Shop, Integer> {
     // Set<Shop> findAllByLove_Id(int userId);
 
 	List<Shop> findFirst6ByNameLikeAndIsDeleteIsFalse(String name);
+
+    List<Shop> getShopsByUserId(int id);
+
+	Optional<Shop> getShopsByIdAndUserId(int id, int userId);
+
+	Optional<Shop> findByIdAndLovesId(int shopId, int userId);
 }

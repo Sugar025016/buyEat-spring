@@ -18,6 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
@@ -34,8 +35,8 @@ public class Order extends BaseEntity {
     @Column(name = "delivery_time", updatable = false)
     private LocalDateTime deliveryTime;
 
-    @Column(name = "note", nullable = true)
-    private String note;
+    @Column(name = "remark", nullable = true)
+    private String remark;
 
     @Column(name = "is_finish", nullable = true)
     private boolean isFinish;
@@ -51,5 +52,13 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "address_id")
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+
+    public Order(LocalDateTime deliveryTime, String remark, Shop shop, User user, Address address) {
+        this.deliveryTime = deliveryTime;
+        this.remark = remark;
+        this.shop = shop;
+        this.user = user;
+        this.address = address;
+    }
 
 }

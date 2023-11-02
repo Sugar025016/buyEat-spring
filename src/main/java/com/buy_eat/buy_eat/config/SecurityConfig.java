@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,9 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests(requests -> requests
-						.antMatchers("/api/category/**","/api/product/**","/api/shop/**","/api/tab/**","/logout*","/login*").permitAll()
-						.antMatchers("/api/upload*").hasRole("USER")
-						.antMatchers("/backstage/**", "/api/upload**","/api/**/**").hasRole("ADMIN")
+						.antMatchers(HttpMethod.GET,"/api/category/**","/api/product/**","/api/shop/**","/api/tab/**","/logout*","/login*").permitAll()
+						.antMatchers("/api/upload*","/sell/**").hasRole("USER")
+						.antMatchers("/backstage/**", "/api/upload**","/sell/**","/api/**/**").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.formLogin(login -> login
 						.loginProcessingUrl("/login")
@@ -59,7 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						.tokenRepository(persistentTokenRepository())
 						.tokenValiditySeconds(600)
 						.userDetailsService(userDetailsService));// 定義remember-me等於true 和 token 過期時
-
 
 
 		http.csrf(csrf -> csrf

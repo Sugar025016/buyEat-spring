@@ -20,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.buy_eat.buy_eat.model.request.BackstageProductAddRequest;
 import com.buy_eat.buy_eat.model.request.BackstageProductPutRequest;
+import com.buy_eat.buy_eat.model.request.SellProductRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -31,6 +32,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "product")
+// @Where(clause = "is_delete = false")
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "auto_increment")
@@ -53,13 +55,14 @@ public class Product extends BaseEntity {
     @Column(name = "is_orderable", length = 255, nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isOrderable;
 
-    // @Column(name = "is_sold_out", length = 255, nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    // @Column(name = "is_sold_out", length = 255, nullable = false,
+    // columnDefinition = "BOOLEAN DEFAULT false")
     // private boolean is_sold_out;
 
-    // @JsonIgnore
-    // @JoinColumn(name = "shop_id")
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // private Shop shop;
+    @JsonIgnore
+    @JoinColumn(name = "shop_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Shop shop;
 
     @JsonIgnore
     @JoinColumn(name = "tab_id")
@@ -70,9 +73,8 @@ public class Product extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private FileData fileData;
 
-
     @JsonIgnore
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Cart> cart;
 
     @Override
@@ -87,7 +89,7 @@ public class Product extends BaseEntity {
 
     public void setDelete(boolean isDelete) {
         if (isDelete) {
-            this.isOrderable = true;
+            this.isDelete = true;
         }
     }
 
@@ -96,9 +98,20 @@ public class Product extends BaseEntity {
         this.fileData = null;
     }
 
+    public void setSellProduct(SellProductRequest sellProductRequest) {
+        BeanUtils.copyProperties(sellProductRequest, this);
+        this.fileData = null;
+    }
+
     public Product(BackstageProductAddRequest productAddRequest) {
         BeanUtils.copyProperties(productAddRequest, this);
 
     }
 
+    public Product(SellProductRequest sellProductRequest) {
+        BeanUtils.copyProperties(sellProductRequest, this);
+
+    }
+
+    
 }

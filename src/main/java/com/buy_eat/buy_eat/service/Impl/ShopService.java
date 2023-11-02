@@ -7,8 +7,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.buy_eat.buy_eat.entity.Address;
 import com.buy_eat.buy_eat.entity.FileData;
@@ -44,13 +46,12 @@ public class ShopService implements IShopService {
                 shopRequest.getArea(), shopRequest.getCategoryId(), shopRequest.getOther());
 
     }
+
     @Override
     public List<Shop> findShopsByName(String name) {
-        
-
-        return iShopRepository.findFirst6ByNameLikeAndIsDeleteIsFalse("%"+name+"%");
-
+        return iShopRepository.findFirst6ByNameLikeAndIsDeleteIsFalse("%" + name + "%");
     }
+
     @Override
     public Shop getShopById(int id) {
 
@@ -124,15 +125,38 @@ public class ShopService implements IShopService {
         Address save = iAddressRepository.save(address);
 
         Shop shop = new Shop(shopAddRequest, save, findById3.get(), findById.get());
-        iShopRepository.save(shop);
 
-        return true;
+        return iShopRepository.save(shop) != null;
     }
 
     @Override
     public Set<Shop> findShopsLim() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findShopsLim'");
+    }
+
+    @Override
+    public List<Shop> getShopsByUserId(int id) {
+        return iShopRepository.getShopsByUserId(id);
+    }
+
+    @Override
+    public Shop getShopByUserId(int UserId, int ShopId) {
+        Optional<Shop> shopsByIdAndUserId = iShopRepository.getShopsByIdAndUserId(ShopId, UserId);
+        Shop orElseThrow = shopsByIdAndUserId
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shop not found"));
+        return orElseThrow;
+    }
+
+    @Override
+    public boolean deleteShop(int id) {
+        Optional<Shop> shopsByIdAndUserId = iShopRepository.findById(id);
+        Shop shop = shopsByIdAndUserId
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shop not found"));
+
+        shop.setIsDelete(true);
+        Shop save = iShopRepository.save(shop);
+        return save.isDelete();
     }
 
 }

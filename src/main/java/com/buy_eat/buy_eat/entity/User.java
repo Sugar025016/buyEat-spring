@@ -1,6 +1,7 @@
 package com.buy_eat.buy_eat.entity;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -19,6 +21,8 @@ import javax.validation.constraints.Email;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.buy_eat.buy_eat.model.request.UserPutRequest;
 import com.buy_eat.buy_eat.model.request.UserRequest;
@@ -55,22 +59,25 @@ public class User extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
-    // @JoinTable(name = "user_address", joinColumns = @JoinColumn(name =
-    // "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"))
-    private List<Address> address;
+    @JoinTable(name = "user_address", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "address_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
+            "user_id", "address_id" }))
+    private List<Address> addresses;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address deliveryAddress;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     @Where(clause = "is_delete = false")
     private List<Shop> shops;
 
-    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "love", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "shop_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
             "user_id", "shop_id" }))
     @Where(clause = "is_delete = false")
     private List<Shop> loves;
-
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -104,13 +111,21 @@ public class User extends BaseEntity {
         BeanUtils.copyProperties(userRequest, this);
     }
 
+    public void setDeliveryAddress(Address address) {
+        Optional<Address> findAny = addresses.stream().filter(v -> v.getId() == address.getId()).findAny();
+        Address orElseThrow = findAny.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+            this.deliveryAddress = orElseThrow;
+    }
+
+
     // public Set<ShopResponse> getShopLoveList() {
-    //     Set<ShopResponse> collect = shopLoveList.stream().map(v->new ShopResponse(v)).collect(Collectors.toSet());
-    //     return collect;
+    // Set<ShopResponse> collect = shopLoveList.stream().map(v->new
+    // ShopResponse(v)).collect(Collectors.toSet());
+    // return collect;
     // }
 
     // public void setShopLoveList(Set<Shop> shopLoveList) {
-    //     this.shopLoveList = shopLoveList;
+    // this.shopLoveList = shopLoveList;
     // }
 
 }

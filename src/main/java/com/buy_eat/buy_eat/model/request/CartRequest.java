@@ -26,8 +26,8 @@ public class CartRequest {
     @NotEmpty
     private int qty;
 
-    private String note;
-
+    private String remark;
+    
 
     
 }

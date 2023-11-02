@@ -31,12 +31,21 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
     @Query(value = "SELECT NEW com.buy_eat.buy_eat.model.response.BackstageProductResponse(p) " +
             "FROM Product p LEFT JOIN p.tab t " +
             "LEFT JOIN t.shop s " +
-            "WHERE (:shop_id IS NULL OR s.id = :shop_id)", countQuery = "SELECT COUNT(p)" +
+            "WHERE (:shop_id IS NULL OR s.id = :shop_id) AND ( p.isDelete = false )", countQuery = "SELECT COUNT(p)" +
                     "FROM Product p LEFT JOIN p.tab t " +
                     "LEFT JOIN t.shop s " +
-                    "WHERE (:shop_id IS NULL OR s.id = :shop_id)")
-    Page<BackstageProductResponse> findAllByShopId(@Param("shop_id") Integer shopId, Pageable pageable);
+                    "WHERE (:shop_id IS NULL OR s.id = :shop_id) AND ( p.isDelete = false )")
+    Page<BackstageProductResponse> findAllByShopIdAndDeleteIsFalse(@Param("shop_id") Integer shopId, Pageable pageable);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Product> findById(int id);
+
+    Optional<Product> findByIdAndShopUserId(int productId, int userId);
+
+    Optional<Product> findByIdAndShopUserIdAndIsDeleteIsFalse(int productId, int userId);
+
+    List<Product> getProductByShopIdAndShopUserId(int shopId, int userId);
+
+    List<Product> getProductByShopIdAndShopUserIdAndIsDeleteIsFalse(int shopId, int userId);
+    
 }

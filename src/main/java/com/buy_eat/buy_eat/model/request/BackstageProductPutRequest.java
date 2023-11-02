@@ -17,8 +17,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BackstageProductPutRequest {
 
-    @NotNull
     private Integer shopId;
+    
     private String shopName;
 
     @NotNull

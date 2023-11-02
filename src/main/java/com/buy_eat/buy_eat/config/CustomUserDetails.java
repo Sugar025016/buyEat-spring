@@ -38,6 +38,13 @@ public class CustomUserDetails implements UserDetails {
         return username;
     }
 
+    public int getId() {
+        // if(id == 0){
+        //     throw new ServletException("未登入");
+        // }
+        return id;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         // TODO Auto-generated method stub

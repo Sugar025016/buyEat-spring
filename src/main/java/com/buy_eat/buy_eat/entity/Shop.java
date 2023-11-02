@@ -1,6 +1,7 @@
 package com.buy_eat.buy_eat.entity;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Where;
 import org.springframework.beans.BeanUtils;
 
 import com.buy_eat.buy_eat.model.request.BackstageShopAddRequest;
@@ -75,6 +77,11 @@ public class Shop extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop",fetch = FetchType.LAZY)
+    @Where(clause = "is_delete = false")
+    private List<Product> products;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop",fetch = FetchType.LAZY)
     private List<Schedule> schedules;
 
     @JsonIgnore
@@ -119,7 +126,9 @@ public class Shop extends BaseEntity {
  
     }
 
-    private void setIsDelete(boolean is_delete) {
+
+
+    public void setIsDelete(boolean is_delete) {
 
         this.isDelete = is_delete;
 
@@ -162,6 +171,15 @@ public class Shop extends BaseEntity {
 
         this.address = address;
         this.fileData=null;
+    }
+
+    public List<Schedule> getSchedulesForOpen(){
+        return this.schedules.stream().filter(v->v.getType() == 0).collect(Collectors.toList());
+    }
+
+
+    public List<Product> getProductsForNotDelete(){
+        return this.products.stream().filter(v->!v.isDelete()).collect(Collectors.toList());
     }
 
 }

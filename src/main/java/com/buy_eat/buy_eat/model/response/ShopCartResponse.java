@@ -8,6 +8,8 @@ import org.springframework.beans.BeanUtils;
 import com.buy_eat.buy_eat.entity.Cart;
 import com.buy_eat.buy_eat.entity.Product;
 import com.buy_eat.buy_eat.entity.Shop;
+import com.buy_eat.buy_eat.model.ScheduleWeek;
+import com.buy_eat.buy_eat.model.ScheduleWeeks;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -25,15 +27,18 @@ public class ShopCartResponse {
 
     private boolean isOrderable;
 
+    private List<ScheduleWeek> schedules;
+
     private List<CartResponse> CartResponses;
 
     public ShopCartResponse(List<Cart> carts) {
         if (carts.size() != 0) {
-            Shop shop = carts.get(0).getProduct().getTab().getShop();
+            Shop shop = carts.get(0).getProduct().getShop();
             this.shopId = shop.getId();
             this.shopName = shop.getName();
-            this.isOrderable= shop.isOrderable();
+            this.isOrderable = shop.isOrderable();
             this.CartResponses = carts.stream().map(v -> new CartResponse(v)).collect(Collectors.toList());
+            this.schedules = new ScheduleWeeks(shop.getSchedulesForOpen()).getScheduleWeeks();
         }
 
     }
@@ -52,7 +57,7 @@ public class ShopCartResponse {
 
         private int qty;
 
-        private String note;
+        private String remark;
 
         private ProductResponse productResponse;
 
@@ -76,7 +81,7 @@ public class ShopCartResponse {
                 this.productId = product.getId();
                 this.productName = product.getName();
                 this.price = product.getPrise();
-                this.isOrderable=product.isOrderable();
+                this.isOrderable = product.isOrderable();
             }
 
         }

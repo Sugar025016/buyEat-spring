@@ -12,10 +12,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.BeanUtils;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
@@ -33,16 +35,12 @@ public class OrderDetail extends BaseEntity{
     @OneToOne(cascade = CascadeType.DETACH)
     private Product product;
 
-
     @JoinColumn(name = "ordered_id")
     @ManyToOne(cascade = CascadeType.DETACH)
     private Order order;
 
-    @Column(name = "department",nullable = true)
-    private String department;
-
-    @Column(name = "order_name",nullable = true)
-    private String orderName;
+    @Column(name = "order_username",nullable = true)
+    private String orderUsername;
 
     @Column(name = "qty",nullable = true)
     private int qty;
@@ -50,6 +48,16 @@ public class OrderDetail extends BaseEntity{
     @Column(name = "prise",nullable = false)
     private int prise;
 
-    @Column(name = "note",nullable = true)
-    private String note;
+    @Column(name = "remark",nullable = true)
+    private String remark;
+
+    public OrderDetail(Product product, Order order, String department, String orderName, int qty, int prise,
+            String remark) {
+
+    }
+    public OrderDetail(Cart cart) {
+        BeanUtils.copyProperties(cart,this);
+        this.prise=cart.getProduct().getPrise();
+    }
+    
 }

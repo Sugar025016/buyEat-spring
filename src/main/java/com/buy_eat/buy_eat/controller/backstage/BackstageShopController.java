@@ -15,7 +15,7 @@ import com.buy_eat.buy_eat.model.request.BackstageShopAddRequest;
 import com.buy_eat.buy_eat.model.request.BackstageShopPutRequest;
 import com.buy_eat.buy_eat.model.request.ShopSearchRequest;
 import com.buy_eat.buy_eat.model.response.BackstageShopResponse;
-import com.buy_eat.buy_eat.model.response.ShopResponse;
+import com.buy_eat.buy_eat.model.response.ShopDetailResponse;
 import com.buy_eat.buy_eat.service.Impl.ShopService;
 
 @RestController
@@ -36,9 +36,8 @@ public class BackstageShopController {
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ShopResponse> getShop(@PathVariable() int id) {
-
-        ShopResponse shopResponse = new ShopResponse(shopService.getShopById(id));
+    public ResponseEntity<ShopDetailResponse> getShop(@PathVariable() int id) {
+        ShopDetailResponse shopResponse = new ShopDetailResponse(shopService.getShopById(id));
         return ResponseEntity.ok().body(shopResponse);
     }
 
@@ -51,8 +50,12 @@ public class BackstageShopController {
 
     @RequestMapping(path = "", method = RequestMethod.POST)
     public ResponseEntity<Boolean> postShop(@RequestBody  BackstageShopAddRequest shopPutRequest ) {
-
         return ResponseEntity.ok().body(shopService.addShop(shopPutRequest));
     }
 
+
+    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Boolean> deleteShop(@PathVariable() int id) {
+        return ResponseEntity.ok().body(shopService.deleteShop(id));
+    }
 }

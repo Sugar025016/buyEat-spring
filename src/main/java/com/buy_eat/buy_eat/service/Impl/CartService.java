@@ -47,11 +47,11 @@ public class CartService implements ICartService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         this.getClass().getName() + "Product not found"));
 
-        List<Cart> allByUser_id = iCartRepository.getAllByUser_id(id);
+        List<Cart> carts = iCartRepository.getAllByUser_id(id);
         
-        boolean anyMatch = allByUser_id.stream().anyMatch(v -> v.getShopId() != product.getTab().getShop().getId());
+        boolean anyMatch = carts.stream().anyMatch(v -> v.getProduct().getShop().getId() != product.getShop().getId());
         if (anyMatch) {
-            iCartRepository.deleteAll(allByUser_id);
+            iCartRepository.deleteAll(carts);
             iCartRepository.flush();
         }
 

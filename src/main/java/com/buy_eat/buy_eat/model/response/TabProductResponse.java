@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.buy_eat.buy_eat.entity.Tab;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,16 +21,20 @@ public class TabProductResponse {
 
     private String name;
 
+
+    @JsonProperty("shelve")
+    private boolean isShelve;
+
     private List<ProductResponse> products;
 
     public TabProductResponse(Tab tab) {
+
         this.id = tab.getId();
         this.name = tab.getName();
+        this.isShelve = tab.isShelve();
 
-        this.products = tab.getProducts().stream().map(v -> new ProductResponse(v))
+        this.products = tab.getProductsForNotDelete().stream().map(v -> new ProductResponse(v))
         .collect(Collectors.toList());
     }
-
-    
 
 }

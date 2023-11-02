@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.buy_eat.buy_eat.entity.Address;
 import com.buy_eat.buy_eat.entity.Shop;
 import com.buy_eat.buy_eat.entity.User;
 import com.buy_eat.buy_eat.model.request.PasswordRequest;
@@ -26,7 +27,9 @@ public interface IUserService {
 
 
     List<Shop> findLoveByAccount(int id );
-    List<Shop> addOrDeleteUserLove(int id,int shopId) ;
+    Boolean addOrDeleteUserLove(int id,int shopId) ;
 
     List<String> findByAccounts(String account);
+
+    List<Address> putUserAddress(int userId,List<Address> addresses);
 }

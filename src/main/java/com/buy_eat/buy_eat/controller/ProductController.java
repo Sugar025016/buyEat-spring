@@ -16,7 +16,7 @@ import com.buy_eat.buy_eat.service.Impl.ProductService;
 
 @RestController
 @RequestMapping("/api/product")
-public class productController {
+public class ProductController {
 
     @Autowired
     ProductService productService;
@@ -33,9 +33,9 @@ public class productController {
         return ResponseEntity.ok().body(collect);
     }
 
-    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteProduct(@PathVariable int id) {
-        return productService.deleteProductById(id) != null ? ResponseEntity.ok().build()
-                : ResponseEntity.notFound().build();
-    }
+    // @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+    // public ResponseEntity<String> deleteProduct(@PathVariable int id) {
+    //     return productService.deleteProductById(id) != null ? ResponseEntity.ok().build()
+    //             : ResponseEntity.notFound().build();
+    // }
 }

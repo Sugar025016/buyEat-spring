@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.buy_eat.buy_eat.config.CustomUserDetails;
+import com.buy_eat.buy_eat.entity.Address;
 import com.buy_eat.buy_eat.entity.Shop;
 import com.buy_eat.buy_eat.entity.User;
 import com.buy_eat.buy_eat.model.request.PasswordRequest;
@@ -66,7 +67,8 @@ public class UserController {
     }
 
     @RequestMapping(path = "/favorite", method = RequestMethod.GET)
-    public ResponseEntity<List<ShopResponse>> getLoves(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+    public ResponseEntity<List<ShopResponse>> getLoves(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         List<Shop> findLoveByAccount = userService.findLoveByAccount(customUserDetails.getId());
         List<ShopResponse> collect = findLoveByAccount.stream().map(v -> new ShopResponse(v))
                 .collect(Collectors.toList());
@@ -74,13 +76,22 @@ public class UserController {
     }
 
     @RequestMapping(path = "/favorite/{shopId}", method = RequestMethod.PUT)
-    public ResponseEntity<List<ShopResponse>> addOrDeleteUserLove(@PathVariable int shopId,
+    public ResponseEntity<Boolean> addOrDeleteUserLove(@PathVariable int shopId,
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        List<Shop> findLoveByAccount = userService.addOrDeleteUserLove(customUserDetails.getId(),
+        Boolean findLoveByAccount = userService.addOrDeleteUserLove(customUserDetails.getId(),
                 shopId);
-        List<ShopResponse> collect = findLoveByAccount.stream().map(v -> new ShopResponse(v))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok().body(collect);
+        return ResponseEntity.ok().body(findLoveByAccount);
     }
 
+    @RequestMapping(path = "/address", method = RequestMethod.GET)
+    public ResponseEntity<List<Address>> getAddress(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        User findByAccount = userService.findById(customUserDetails.getId());
+        return ResponseEntity.ok().body(findByAccount.getAddresses());
+    }
+
+    @RequestMapping(path = "/address", method = RequestMethod.PUT)
+    public ResponseEntity<List<Address>> putAddress(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestBody List<Address> addresses) {
+        return ResponseEntity.ok().body(userService.putUserAddress(customUserDetails.getId(), addresses));
+    }
 }

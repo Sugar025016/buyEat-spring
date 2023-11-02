@@ -21,7 +21,7 @@ public class ProductResponse {
 
     private String name;
     private String description;
-    private String img;
+    private String imgUrl;
     private boolean isOrderable;
     private int prise;
 
@@ -33,7 +33,7 @@ public class ProductResponse {
         BeanUtils.copyProperties(product,this);
 
         if(product.getFileData()!=null){
-            this.img=product.getFileData().getFileName();
+            this.imgUrl=product.getFileData().getFileName();
         }
 
     }
