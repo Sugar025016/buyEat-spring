@@ -1,15 +1,18 @@
 package com.buy_eat.buy_eat.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -32,14 +35,17 @@ public class Order extends BaseEntity {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "delivery_time", updatable = false)
-    private LocalDateTime deliveryTime;
+    @Column(name = "take_time", updatable = false)
+    private LocalDateTime takeTime;
 
     @Column(name = "remark", nullable = true)
     private String remark;
 
-    @Column(name = "is_finish", nullable = true)
-    private boolean isFinish;
+    // @Column(name = "is_finish", nullable = true)
+    // private int isFinish;
+
+    @Column(name = "status", nullable = true)
+    private int status=11;
 
     @JoinColumn(name = "shop_id")
     @ManyToOne(cascade = CascadeType.DETACH)
@@ -53,8 +59,12 @@ public class Order extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    public Order(LocalDateTime deliveryTime, String remark, Shop shop, User user, Address address) {
-        this.deliveryTime = deliveryTime;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order",fetch = FetchType.LAZY)
+    // @OneToMany(cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetail;
+
+    public Order(LocalDateTime takeTime, String remark, Shop shop, User user, Address address) {
+        this.takeTime = takeTime;
         this.remark = remark;
         this.shop = shop;
         this.user = user;

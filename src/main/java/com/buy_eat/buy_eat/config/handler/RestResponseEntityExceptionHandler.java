@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.buy_eat.buy_eat.model.ValidationError;
@@ -21,14 +20,14 @@ public class RestResponseEntityExceptionHandler {
     // public class RestResponseEntityExceptionHandler implements WebMvcConfigurer{
 
     // @ResponseBody
-    @ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class })
-    protected ResponseEntity<Object> handleConflict(
-            RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = "This should be application specific";
-        // return handleExceptionInternal(ex, bodyOfResponse,
-        // new HttpHeaders(), HttpStatus.CONFLICT, request);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyOfResponse);
-    }
+    // @ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class })
+    // protected ResponseEntity<Object> handleConflict(
+    //         RuntimeException ex, WebRequest request) {
+    //     String bodyOfResponse = "This should be application specific";
+    //     // return handleExceptionInternal(ex, bodyOfResponse,
+    //     // new HttpHeaders(), HttpStatus.CONFLICT, request);
+    //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(bodyOfResponse);
+    // }
 
     // @ResponseBody
     @ExceptionHandler(NotFoundException.class)

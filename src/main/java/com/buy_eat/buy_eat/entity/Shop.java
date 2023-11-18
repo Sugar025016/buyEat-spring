@@ -68,7 +68,7 @@ public class Shop extends BaseEntity {
 
     @JsonIgnore
     @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     private User user;
 
     @JsonIgnore
@@ -93,6 +93,10 @@ public class Shop extends BaseEntity {
     @JoinTable(name = "shop_category", joinColumns = @JoinColumn(name = "shop_id"), inverseJoinColumns = @JoinColumn(name = "category_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
             "shop_id", "category_id" }))
     private List<Category> category;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shop")
+    private List<Order> orders;
 
     // 給關聯過來的回傳值
     @Override

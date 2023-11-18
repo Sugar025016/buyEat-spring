@@ -26,6 +26,8 @@ import com.buy_eat.buy_eat.model.request.PasswordRequest;
 import com.buy_eat.buy_eat.model.request.UserPutRequest;
 import com.buy_eat.buy_eat.model.response.ShopResponse;
 import com.buy_eat.buy_eat.model.response.UserResponse;
+import com.buy_eat.buy_eat.repository.IAddressDataRepository;
+import com.buy_eat.buy_eat.service.Impl.AddressService;
 import com.buy_eat.buy_eat.service.Impl.UserService;
 
 @RestController
@@ -34,6 +36,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    IAddressDataRepository addressDataRepository;
 
     // CustomUserDetails
     @RequestMapping(path = "", method = RequestMethod.GET)
@@ -93,5 +98,32 @@ public class UserController {
     public ResponseEntity<List<Address>> putAddress(@AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody List<Address> addresses) {
         return ResponseEntity.ok().body(userService.putUserAddress(customUserDetails.getId(), addresses));
+    }
+
+    // 新增database 的 addressData
+    // @RequestMapping(path = "/address", method = RequestMethod.POST)
+    // public ResponseEntity<List<AddressData>> Address(@AuthenticationPrincipal
+    // CustomUserDetails customUserDetails,
+    // @RequestBody List<AddressDataRequest> addressDataRequests) {
+    // ArrayList<AddressData> arrayList = new ArrayList<AddressData>();
+    // addressDataRequests.stream().forEach(c -> c.getArea().stream().forEach(a -> {
+    // List<AddressData> arrayList2 = a.getStreets().stream()
+    // .map(s -> new AddressData(s.getStreetKey(), c.getCityName(), a.getAreaName(),
+    // s.getStreetName()))
+    // .collect(Collectors.toList());
+    // arrayList.addAll(arrayList2);
+    // }));
+    // List<AddressData> saveAll = addressDataRepository.saveAll(arrayList);
+    // return ResponseEntity.ok().body(saveAll);
+    // }
+
+    @Autowired
+    AddressService addressData;
+
+    @RequestMapping(path = "/google", method = RequestMethod.GET)
+    public ResponseEntity<String> getGoogle(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestBody String address) {
+                addressData.geocodeAddress(address);
+        return ResponseEntity.ok().body("address2");
     }
 }

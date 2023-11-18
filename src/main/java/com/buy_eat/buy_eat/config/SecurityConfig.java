@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						.rememberMeCookieName("remember-me")
 						.rememberMeParameter("remember-me")
 						.tokenRepository(persistentTokenRepository())
-						.tokenValiditySeconds(600)
+						.tokenValiditySeconds(6000)
 						.userDetailsService(userDetailsService));// 定義remember-me等於true 和 token 過期時
 
 

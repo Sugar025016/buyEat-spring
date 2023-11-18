@@ -68,11 +68,6 @@ public class User extends BaseEntity {
     @JoinColumn(name = "address_id")
     private Address deliveryAddress;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL)
-    @Where(clause = "is_delete = false")
-    private List<Shop> shops;
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "love", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "shop_id"), uniqueConstraints = @UniqueConstraint(columnNames = {
             "user_id", "shop_id" }))
@@ -82,6 +77,11 @@ public class User extends BaseEntity {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Cart> carts;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @Where(clause = "is_delete = false")
+    private List<Shop> shops;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

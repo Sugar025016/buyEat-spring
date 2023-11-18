@@ -77,6 +77,10 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Cart> cart;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product",fetch = FetchType.LAZY)
+    // @OneToMany(cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetail;
+
     @Override
     public String toString() {
         return "Product{" +
